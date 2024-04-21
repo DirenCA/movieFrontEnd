@@ -1,7 +1,7 @@
 <script>
 export default {
   name: 'Navbar'
-}
+}//test
 </script>
 
 <template>
