@@ -1,11 +1,16 @@
 <template>
-  <nav>
-    <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link> |
-    <router-link to="/test">Test</router-link>
-  </nav>
+  <navbar></navbar>
   <router-view/>
 </template>
+
+<script>
+import Navbar from '@/components/Navbar.vue'
+
+export default {
+  name: 'App',
+  components: { Navbar }
+}
+</script>
 
 <style>
 #app {
@@ -29,5 +34,3 @@ nav a.router-link-exact-active {
   color: #42b983;
 }
 </style>
-<script setup lang="ts">
-</script>
