@@ -1,11 +1,11 @@
 <script>
 export default {
-  name: 'Lists'
+  name: 'watchlist'
 }
 </script>
 
 <template>
-  <div class="lists">
+  <div class="watchlists">
     <h1>This is a page to list things</h1>
     <ul>
       <li v-for="item in items" :key="item.id">
