@@ -33,6 +33,9 @@ export default {
           <li class="nav-item">
             <router-link to="/test" class="nav-link">Test</router-link>
           </li>
+          <li class="nav-item">
+            <router-link to="/films" class="nav-link">Movies</router-link>
+          </li>
         </ul>
         <form class="d-flex" role="search">
           <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
