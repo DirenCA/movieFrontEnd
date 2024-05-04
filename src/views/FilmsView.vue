@@ -1,9 +1,21 @@
 <script>
+import axios from 'axios'
 export default {
   name: 'films',
+  data () {
+    return {
+      search: '',
+      movies: []
+    }
+  },
   methods: {
-    searchMovies () {
-      console.log('searching movies')
+    async searchMovies () {
+      try {
+        const response = await axios.get('/films', { params: { search: this.search } })
+        this.movies = response.data
+      } catch (error) {
+        console.error(error)
+      }
     }
   }
 }
