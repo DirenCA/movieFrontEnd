@@ -1,13 +1,18 @@
 <script>
 export default {
-  name: 'films'
+  name: 'films',
+  methods: {
+    searchMovies () {
+      console.log('searching movies')
+    }
+  }
 }
 </script>
 
 <template>
   <div class="films">
     <h1>Hier findest du alle Filme!</h1>
-    <form class="form-inline my-2 my-lg-0">
+    <form class="form-inline my-2 my-lg-0">  @submit.prevent="searchMovies">
       <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
       <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
     </form>
