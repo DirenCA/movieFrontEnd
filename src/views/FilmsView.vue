@@ -10,7 +10,7 @@ export default {
   },
   methods: {
     async searchMovies () {
-      console.log('searchMovies called with search term:', this.search) // Log when the method is called
+      console.log('searchMovies called with search term:', this.search) // Log, wenn Methode aufgerufen wird
       try {
         const response = await axios.get('/films', { params: { search: this.search } })
         console.log(response) // Log the response to see what's returned
@@ -32,11 +32,12 @@ export default {
     </form>
     <div>
       <h1>Gesuchtes Wort: {{ search }}</h1>
-      <ul>
-        <li v-for="movie in movies" :key="movie.id">
-          {{ movie }}
-        </li>
-      </ul>
+      <b-card-group deck>
+        <b-card v-for="movie in movies" :key="movie.id" :title="movie" class="mb-2">
+          <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+          <b-button variant="primary">Go somewhere</b-button>
+        </b-card>
+      </b-card-group>
     </div>
   </div>
 </template>
