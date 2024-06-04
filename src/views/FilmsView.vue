@@ -51,5 +51,14 @@ export default {
         </li>
       </ul>
     </div>
+    <div>
+      <h1>Popular Movies:</h1>
+      <ul>
+        <li v-for="movie in popularMovies" :key="movie.id">
+          {{ movie.title }}
+          <img :src="movie.imageUrl" alt="Movie poster">
+        </li>
+      </ul>
+    </div>
   </div>
 </template>
