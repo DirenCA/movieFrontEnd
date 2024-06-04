@@ -5,7 +5,8 @@ export default {
   data () {
     return {
       search: '',
-      movies: []
+      movies: [],
+      popularMovies: []
     }
   },
   methods: {
@@ -18,7 +19,19 @@ export default {
       } catch (error) {
         console.error(error)
       }
+    },
+    async getPopularMovies () {
+      try {
+        const response = await axios.get('/popular')
+        console.log(response)
+        this.popularMovies = response.data
+      } catch (error) {
+        console.error(error)
+      }
     }
+  },
+  created () {
+    this.getPopularMovies()
   }
 }
 </script>
@@ -32,12 +45,11 @@ export default {
     </form>
     <div>
       <h1>Gesuchtes Wort: {{ search }}</h1>
-      <b-card-group deck>
-        <b-card v-for="movie in movies" :key="movie.id" :title="movie" class="mb-2">
-          <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-          <b-button variant="primary">Go somewhere</b-button>
-        </b-card>
-      </b-card-group>
+      <ul>
+        <li v-for="movie in movies" :key="movie.id">
+          {{ movie }}
+        </li>
+      </ul>
     </div>
   </div>
 </template>
