@@ -60,7 +60,13 @@ export default {
             <div class="card-body">
               <h5 class="card-title">{{ movie.title }}</h5>
               <p class="card-text">{{ movie.overview }}</p>
-              <a href="#" class="btn btn-primary">Go somewhere</a>
+              <div class="text-center">
+                <v-rating
+                  v-model="rating"
+                  hover
+                ></v-rating>
+              </div>
+              <a href="#" class="btn btn-primary">Add to Watchlist</a>
             </div>
           </div>
         </div>
@@ -68,3 +74,15 @@ export default {
     </div>
   </div>
 </template>
+
+<style scoped>
+.card {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+}
+</style>
+
+<style scoped>
+.v-rating .v-icon {
+  color: black !important;
+}
+</style>
