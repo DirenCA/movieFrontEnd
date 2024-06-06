@@ -4,22 +4,11 @@ export default {
   name: 'films',
   data () {
     return {
-      search: '',
       movies: [],
       popularMovies: []
     }
   },
   methods: {
-    async searchMovies () {
-      console.log('searchMovies called with search term:', this.search) // Log, wenn Methode aufgerufen wird
-      try {
-        const response = await axios.get('/films', { params: { search: this.search } })
-        console.log(response) // Log the response to see what's returned
-        this.movies = response.data
-      } catch (error) {
-        console.error(error)
-      }
-    },
     async getPopularMovies () {
       try {
         const response = await axios.get('/popular')
