@@ -16,6 +16,14 @@ export default {
       } catch (error) {
         console.error(error)
       }
+    },
+    async addToWatchlist (movie) {
+      try {
+        await axios.post('/watchlist', movie)
+        alert('Film zur Watchlist hinzugefügt!')
+      } catch (error) {
+        console.error(error)
+      }
     }
   },
   watch: {
@@ -46,7 +54,7 @@ export default {
                 hover
               ></v-rating>
             </div>
-            <a href="#" class="btn btn-primary">Add to Watchlist</a>
+            <a href="#" class="btn btn-primary" @click.prevent="addToWatchlist(movie)">Add to Watchlist</a>
           </div>
         </div>
       </div>
