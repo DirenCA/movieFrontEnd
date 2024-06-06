@@ -18,8 +18,14 @@ export default {
       }
     }
   },
-  created () {
-    this.searchMovies()
+  watch: {
+    '$route.params.query': {
+      immediate: true,
+      handler (newVal) {
+        this.query = newVal
+        this.searchMovies()
+      }
+    }
   }
 }
 </script>
