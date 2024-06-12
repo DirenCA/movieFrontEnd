@@ -19,11 +19,13 @@ export default {
       }
     },
     async addToWatchlist (movie) {
+      console.log('Adding movie to watchlist:', movie) // Log-Ausgabe hinzugefügt
       try {
-        await axios.post('/watchlist', movie)
+        const response = await axios.post('/watchlist', movie)
+        console.log('Response from backend:', response)// Log-Ausgabe hinzugefügt
         alert('Film zur Watchlist hinzugefügt!')
       } catch (error) {
-        console.error(error)
+        console.error('Error adding movie to watchlist:', error) // Fehler-Log hinzugefügt
       }
     }
   },

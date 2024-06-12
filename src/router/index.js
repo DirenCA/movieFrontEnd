@@ -3,12 +3,13 @@ import AboutView from '@/views/AboutView.vue'
 import SearchResultsView from '@/views/SearchResultsView.vue'
 import WatchlistView from '@/views/WatchlistView.vue'
 import FilmsView from '@/views/FilmsView.vue'
+import HomeView from '@/views/HomeView.vue'
 
 const routes = [
   {
     path: '/',
     name: 'home',
-    component: FilmsView // Änderung hier
+    component: HomeView // Änderung hier
   },
   {
     path: '/about',
