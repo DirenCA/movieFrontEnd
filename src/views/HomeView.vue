@@ -41,8 +41,8 @@
 
 <style scoped>
 .home-view {
-  background-color: #f0f0f0; /* Change this to the desired background color */
-  padding: 20px; /* Optional: Add some padding */
+  background-color: #f0f0f0;
+  padding: 20px;
 }
 
 .custom-carousel {
