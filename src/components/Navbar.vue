@@ -1,6 +1,7 @@
 <script>
 export default {
   name: 'Navbar',
+  props: ['user'],
   data () {
     return {
       search: ''
@@ -9,6 +10,10 @@ export default {
   methods: {
     searchMovies () {
       this.$router.push({ name: 'search-results', params: { query: this.search } })
+    },
+    logOut () {
+      this.$emit('logout')
+      this.$router.push({ name: 'home' })
     }
   }
 }
@@ -23,17 +28,6 @@ export default {
       </button>
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">User</a>
-            <ul class="dropdown-menu">
-              <li><a class="dropdown-item" href="#">Profile</a></li>
-              <li class="dropdown-item">
-                <router-link to="/watchlist" class="nav-link">Watchlist</router-link>
-              </li>
-              <li><hr class="dropdown-divider"></li>
-              <li><a class="dropdown-item" href="#">Something else here</a></li>
-            </ul>
-          </li>
           <li class="nav-item">
             <router-link to="/films" class="nav-link" aria-current="page">Films</router-link>
           </li>
@@ -47,10 +41,20 @@ export default {
             <router-link to="/films" class="nav-link">Movies</router-link>
           </li>
         </ul>
-        <form @submit.prevent="searchMovies" class="d-flex" role="search">
-          <input v-model="search" class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-          <button class="btn btn-outline-success" type="submit">Search</button>
-        </form>
+        <div class="d-flex align-items-center">
+          <div v-if="user">
+            <span class="navbar-text me-2">Hello, {{ user.userName }}</span>
+            <button class="btn btn-outline-danger me-2" @click="logOut">Log Out</button>
+          </div>
+          <div v-else>
+            <button class="btn btn-primary me-2" type="button" data-bs-toggle="modal" data-bs-target="#signInModal">Sign-In</button>
+            <button class="btn btn-primary me-2" type="button" data-bs-toggle="modal" data-bs-target="#signUpModal">Sign-Up</button>
+          </div>
+          <form @submit.prevent="searchMovies" class="d-flex" role="search">
+            <input v-model="search" class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+            <button class="btn btn-outline-success" type="submit">Search</button>
+          </form>
+        </div>
       </div>
     </div>
   </nav>

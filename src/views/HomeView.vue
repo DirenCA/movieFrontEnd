@@ -4,7 +4,7 @@ export default {
   name: 'user',
   data () {
     return {
-      user: {},
+      user: null, // Geändert von {} zu null
       watchlist: [],
       username: '',
       password: '',
@@ -25,6 +25,9 @@ export default {
           // Benutzer erfolgreich angemeldet
           this.user = response.data
           // Token handling hier einfügen, falls verwendet
+
+          // Weiterleitung zur HomeView
+          this.$router.push({ name: 'about' })
         } else {
           alert('Ungültiger Benutzername oder Passwort')
         }
@@ -45,6 +48,9 @@ export default {
 
         if (response.data) {
           alert('Registrierung erfolgreich! Sie können sich jetzt einloggen.')
+
+          // Weiterleitung zur HomeView
+          this.$router.push({ name: 'about' })
         } else {
           alert('Registrierung fehlgeschlagen')
         }
@@ -83,6 +89,11 @@ export default {
       } catch (error) {
         console.error(error)
       }
+    },
+    logOut () {
+      this.user = null
+      // Token handling hier einfügen, falls verwendet
+      this.$router.push({ name: 'home' }) // Weiterleitung zur HomeView
     }
   }
 }
