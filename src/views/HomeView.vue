@@ -10,7 +10,8 @@ export default {
       password: '',
       confirmPassword: '',
       loginUsername: '',
-      loginPassword: ''
+      loginPassword: '',
+      error: '' // Add error data property
     }
   },
   methods: {
@@ -26,12 +27,14 @@ export default {
           // Weiterleitung zur HomeView
           this.$router.push({ name: 'about' })
         } else {
-          alert('Ungültiger Benutzername oder Passwort')
+          this.error = 'Ungültiger Benutzername oder Passwort'
         }
       } catch (error) {
         console.error(error)
-        if (error.response && error.response.status === 500) {
-          this.error = 'Ungültiger Benutzername oder Passwort'
+        if (error.response && error.response.status === 404) {
+          this.error = error.response.data // Use the error message from the backend
+        } else {
+          this.error = 'Ein Fehler ist aufgetreten'
         }
       }
     },
@@ -162,6 +165,7 @@ export default {
             </div>
             <button type="submit" class="btn btn-primary">Submit</button>
           </form>
+          <div v-if="error" class="alert alert-danger mt-3">{{ error }}</div> <!-- Error message display -->
         </div>
       </div>
     </div>
