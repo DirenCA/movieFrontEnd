@@ -1,17 +1,20 @@
 <script>
 import axios from '@/axios.js'
+import { Modal } from 'bootstrap'
+
 export default {
   name: 'user',
   data () {
     return {
-      user: null, // Geändert von {} zu null
+      user: null,
       watchlist: [],
       username: '',
       password: '',
       confirmPassword: '',
       loginUsername: '',
       loginPassword: '',
-      error: '' // Add error data property
+      error: '',
+      signUpError: ''
     }
   },
   methods: {
@@ -22,9 +25,7 @@ export default {
           password: this.loginPassword
         })
         if (response.data) {
-          // Benutzer erfolgreich angemeldet
           this.user = response.data
-          // Weiterleitung zur HomeView
           this.$router.push({ name: 'about' })
         } else {
           this.error = 'Ungültiger Benutzername oder Passwort'
@@ -32,7 +33,7 @@ export default {
       } catch (error) {
         console.error(error)
         if (error.response && error.response.status === 404) {
-          this.error = error.response.data // Use the error message from the backend
+          this.error = error.response.data
         } else {
           this.error = 'Ein Fehler ist aufgetreten'
         }
@@ -40,7 +41,7 @@ export default {
     },
     async signUp () {
       if (this.password !== this.confirmPassword) {
-        alert('Passwörter stimmen nicht überein')
+        this.signUpError = 'Passwörter stimmen nicht überein'
         return
       }
       try {
@@ -51,14 +52,13 @@ export default {
 
         if (response.data) {
           alert('Registrierung erfolgreich! Sie können sich jetzt einloggen.')
-
-          // Weiterleitung zur HomeView
           this.$router.push({ name: 'about' })
         } else {
-          alert('Registrierung fehlgeschlagen')
+          this.signUpError = 'Registrierung fehlgeschlagen'
         }
       } catch (error) {
         console.error(error)
+        this.signUpError = 'Ein Fehler ist aufgetreten'
       }
     },
     async getUser () {
@@ -95,7 +95,15 @@ export default {
     },
     logOut () {
       this.user = null
-      this.$router.push({ name: 'home' }) // Weiterleitung zur HomeView
+      this.$router.push({ name: 'home' })
+    },
+    showSignInModal () {
+      const signInModal = new Modal(document.getElementById('signInModal'))
+      signInModal.show()
+    },
+    showSignUpModal () {
+      const signUpModal = new Modal(document.getElementById('signUpModal'))
+      signUpModal.show()
     }
   }
 }
@@ -141,8 +149,8 @@ export default {
     </button>
   </div>
   <div class="d-grid gap-2 col-6 mx-auto">
-    <button class="btn btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#signInModal">Sign-In</button>
-    <button class="btn btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#signUpModal">Sign-Up</button>
+    <button class="btn btn-primary" type="button" @click="showSignInModal">Sign-In</button>
+    <button class="btn btn-primary" type="button" @click="showSignUpModal">Sign-Up</button>
   </div>
 
   <!-- Sign-In Modal -->
@@ -195,6 +203,7 @@ export default {
             </div>
             <button type="submit" class="btn btn-primary">Submit</button>
           </form>
+          <div v-if="signUpError" class="alert alert-danger mt-3">{{ signUpError }}</div> <!-- Sign-Up error message display -->
         </div>
       </div>
     </div>
@@ -218,7 +227,7 @@ export default {
 }
 
 .d-grid button:hover {
-  background-color: lightblue; /* Neuer CSS-Stil */
+  background-color: lightblue;
 }
 
 .custom-carousel {

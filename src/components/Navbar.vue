@@ -47,8 +47,8 @@ export default {
             <button class="btn btn-outline-danger me-2" @click="logOut">Log Out</button>
           </div>
           <div v-else>
-            <button class="btn btn-primary me-2" type="button" data-bs-toggle="modal" data-bs-target="#signInModal">Sign-In</button>
-            <button class="btn btn-primary me-2" type="button" data-bs-toggle="modal" data-bs-target="#signUpModal">Sign-Up</button>
+            <button class="btn btn-primary me-2" type="button" @click="$emit('show-signin-modal')">Sign-In</button>
+            <button class="btn btn-primary me-2" type="button" @click="$emit('show-signup-modal')">Sign-Up</button>
           </div>
           <form @submit.prevent="searchMovies" class="d-flex" role="search">
             <input v-model="search" class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
