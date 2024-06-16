@@ -80,8 +80,14 @@ export default {
       loginUsername: '',
       loginPassword: '',
       error: '',
-      signUpError: ''
+      signUpError: '',
+      signInModal: null,
+      signUpModal: null
     }
+  },
+  mounted () {
+    this.signInModal = new Modal(document.getElementById('signInModal'))
+    this.signUpModal = new Modal(document.getElementById('signUpModal'))
   },
   methods: {
     async signIn () {
@@ -92,6 +98,7 @@ export default {
         })
         if (response.data) {
           this.user = response.data
+          this.signInModal.hide() // Modal schließen
           this.$router.push({ name: 'about' })
         } else {
           this.error = 'Ungültiger Benutzername oder Passwort'
@@ -118,6 +125,7 @@ export default {
 
         if (response.data) {
           alert('Registrierung erfolgreich! Sie können sich jetzt einloggen.')
+          this.signUpModal.hide() // Modal schließen
           this.$router.push({ name: 'about' })
         } else {
           this.signUpError = 'Registrierung fehlgeschlagen'
@@ -132,36 +140,15 @@ export default {
       this.$router.push({ name: 'home' })
     },
     showSignInModal () {
-      const signInModal = new Modal(document.getElementById('signInModal'))
-      signInModal.show()
+      this.signInModal.show()
     },
     showSignUpModal () {
-      const signUpModal = new Modal(document.getElementById('signUpModal'))
-      signUpModal.show()
+      this.signUpModal.show()
     }
   }
 }
 </script>
 
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
-
-nav {
-  padding: 30px;
-}
-
-nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
-
-nav a.router-link-exact-active {
-  color: #42b983;
-}
+/* Dein CSS */
 </style>

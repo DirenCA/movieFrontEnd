@@ -1,7 +1,7 @@
-// src/main.js
 import { createApp } from 'vue'
 import App from './App.vue'
 import router from './router'
+import store from './store'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import 'bootstrap/dist/js/bootstrap.min.js'
 import 'vuetify/styles'
@@ -17,6 +17,6 @@ const vuetify = createVuetify({
   directives
 })
 
-const app = createApp(App).use(router).use(vuetify)
+const app = createApp(App).use(router).use(store).use(vuetify)
 app.component('menu-icon', MenuIcon)
 app.mount('#app')
