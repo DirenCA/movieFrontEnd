@@ -20,12 +20,9 @@ export default {
           userName: this.loginUsername,
           password: this.loginPassword
         })
-
         if (response.data) {
           // Benutzer erfolgreich angemeldet
           this.user = response.data
-          // Token handling hier einfügen, falls verwendet
-
           // Weiterleitung zur HomeView
           this.$router.push({ name: 'about' })
         } else {
@@ -33,6 +30,9 @@ export default {
         }
       } catch (error) {
         console.error(error)
+        if (error.response && error.response.status === 500) {
+          this.error = 'Ungültiger Benutzername oder Passwort'
+        }
       }
     },
     async signUp () {
@@ -92,7 +92,6 @@ export default {
     },
     logOut () {
       this.user = null
-      // Token handling hier einfügen, falls verwendet
       this.$router.push({ name: 'home' }) // Weiterleitung zur HomeView
     }
   }
