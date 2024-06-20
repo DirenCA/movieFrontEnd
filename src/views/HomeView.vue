@@ -1,78 +1,48 @@
 <script>
 import axios from '@/axios.js'
-import { Modal } from 'bootstrap'
-import { mapGetters, mapActions } from 'vuex'
 
 export default {
   name: 'HomeView',
   data () {
     return {
-      username: '',
-      password: '',
-      confirmPassword: '',
-      loginUsername: '',
-      loginPassword: '',
-      error: '',
-      signUpError: ''
+      topRatedMovies: [],
+      upcomingMovies: [],
+      popularMovies: []
     }
-  },
-  computed: {
-    ...mapGetters(['isLoggedIn', 'user'])
   },
   methods: {
-    ...mapActions(['login', 'logout']),
-    async signIn () {
+    async getTopRatedMovies () {
       try {
-        const response = await axios.post('/user/login', {
-          userName: this.loginUsername,
-          password: this.loginPassword
-        })
-        if (response.data) {
-          this.login(response.data)
-          this.$router.push({ name: 'about' })
-        } else {
-          this.error = 'Ungültiger Benutzername oder Passwort'
-        }
+        const response = await axios.get('/top-rated')
+        console.log(response)
+        this.topRatedMovies = response.data
       } catch (error) {
         console.error(error)
-        if (error.response && error.response.status === 404) {
-          this.error = error.response.data
-        } else {
-          this.error = 'Ein Fehler ist aufgetreten'
-        }
       }
     },
-    async signUp () {
-      if (this.password !== this.confirmPassword) {
-        this.signUpError = 'Passwörter stimmen nicht überein'
-        return
-      }
+    async getUpcomingMovies () {
       try {
-        const response = await axios.post('/user', {
-          userName: this.username,
-          password: this.password
-        })
-
-        if (response.data) {
-          alert('Registrierung erfolgreich! Sie können sich jetzt einloggen.')
-          this.login(response.data)
-          this.$router.push({ name: 'about' })
-        } else {
-          this.signUpError = 'Registrierung fehlgeschlagen'
-        }
+        const response = await axios.get('/upcoming')
+        console.log(response)
+        this.upcomingMovies = response.data
       } catch (error) {
         console.error(error)
-        this.signUpError = 'Ein Fehler ist aufgetreten'
       }
     },
-    showSignInModal () {
-      const signInModal = new Modal(document.getElementById('signInModal'))
-      signInModal.show()
-    },
-    showSignUpModal () {
-      const signUpModal = new Modal(document.getElementById('signUpModal'))
-      signUpModal.show()
+    async getPopularMovies () {
+      try {
+        const response = await axios.get('/popular')
+        console.log(response)
+        this.popularMovies = response.data
+      } catch (error) {
+        console.error(error)
+      }
     }
+  },
+  created () {
+    this.getTopRatedMovies()
+    this.getUpcomingMovies()
+    this.getPopularMovies()
   }
 }
 </script>
@@ -117,70 +87,75 @@ export default {
         <span class="visually-hidden">Next</span>
       </button>
     </div>
-    <div class="d-grid gap-2 col-6 mx-auto" v-if="!isLoggedIn">
-      <button class="btn btn-primary" type="button" @click="showSignInModal">Sign-In</button>
-      <button class="btn btn-primary" type="button" @click="showSignUpModal">Sign-Up</button>
-    </div>
-    <div class="d-grid gap-2 col-6 mx-auto" v-else>
-      <span class="navbar-text me-2">Hello, {{ user.userName }}</span>
-      <button class="btn btn-outline-danger me-2" @click="logOut">Log Out</button>
-    </div>
+    <v-container>
+      <v-tabs v-model="tab">
+        <v-tab v-for="tabName in tabs" :key="tabName">
+          {{ tabName }}
+        </v-tab>
+      </v-tabs>
 
-    <!-- Sign-In Modal -->
-    <div class="modal fade" id="signInModal" tabindex="-1" aria-labelledby="signInModalLabel" aria-hidden="true">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="signInModalLabel">Sign-In</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body">
-            <form @submit.prevent="signIn">
-              <div class="mb-3">
-                <label for="loginUsername" class="form-label">Username</label>
-                <input type="text" class="form-control" id="loginUsername" v-model="loginUsername">
-              </div>
-              <div class="mb-3">
-                <label for="loginPassword" class="form-label">Password</label>
-                <input type="password" class="form-control" id="loginPassword" v-model="loginPassword">
-              </div>
-              <button type="submit" class="btn btn-primary">Submit</button>
-            </form>
-            <div v-if="error" class="alert alert-danger mt-3">{{ error }}</div>
-          </div>
-        </div>
-      </div>
-    </div>
+      <v-tabs-items v-model="tab">
+        <v-tab-item>
+          <v-container>
+            <v-row>
+              <v-col
+                v-for="movie in topRatedMovies"
+                :key="movie.id"
+                cols="12"
+                sm="6"
+                md="4"
+                lg="3"
+              >
+                <v-card class="mx-auto my-4" max-width="300">
+                  <v-img :src="movie.imageUrl" height="400px" class="white--text"></v-img>
+                  <v-card-title class="text-center">{{ movie.title }}</v-card-title>
+                </v-card>
+              </v-col>
+            </v-row>
+          </v-container>
+        </v-tab-item>
 
-    <!-- Sign-Up Modal -->
-    <div class="modal fade" id="signUpModal" tabindex="-1" aria-labelledby="signUpModalLabel" aria-hidden="true">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="signUpModalLabel">Sign-Up</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body">
-            <form @submit.prevent="signUp">
-              <div class="mb-3">
-                <label for="signUpUsername" class="form-label">Username</label>
-                <input type="text" class="form-control" id="signUpUsername" v-model="username">
-              </div>
-              <div class="mb-3">
-                <label for="signUpPassword" class="form-label">Password</label>
-                <input type="password" class="form-control" id="signUpPassword" v-model="password">
-              </div>
-              <div class="mb-3">
-                <label for="signUpConfirmPassword" class="form-label">Confirm Password</label>
-                <input type="password" class="form-control" id="signUpConfirmPassword" v-model="confirmPassword">
-              </div>
-              <button type="submit" class="btn btn-primary">Submit</button>
-            </form>
-            <div v-if="signUpError" class="alert alert-danger mt-3">{{ signUpError }}</div>
-          </div>
-        </div>
-      </div>
-    </div>
+        <v-tab-item>
+          <v-container>
+            <v-row>
+              <v-col
+                v-for="movie in upcomingMovies"
+                :key="movie.id"
+                cols="12"
+                sm="6"
+                md="4"
+                lg="3"
+              >
+                <v-card class="mx-auto my-4" max-width="300">
+                  <v-img :src="movie.imageUrl" height="400px" class="white--text"></v-img>
+                  <v-card-title class="text-center">{{ movie.title }}</v-card-title>
+                </v-card>
+              </v-col>
+            </v-row>
+          </v-container>
+        </v-tab-item>
+
+        <v-tab-item>
+          <v-container>
+            <v-row>
+              <v-col
+                v-for="movie in popularMovies"
+                :key="movie.id"
+                cols="12"
+                sm="6"
+                md="4"
+                lg="3"
+              >
+                <v-card class="mx-auto my-4" max-width="300">
+                  <v-img :src="movie.imageUrl" height="400px" class="white--text"></v-img>
+                  <v-card-title class="text-center">{{ movie.title }}</v-card-title>
+                </v-card>
+              </v-col>
+            </v-row>
+          </v-container>
+        </v-tab-item>
+      </v-tabs-items>
+    </v-container>
   </div>
 </template>
 
@@ -188,20 +163,6 @@ export default {
 .home-view {
   background-color: #f0f0f0;
   padding: 20px;
-}
-.d-grid {
-  max-width: 400px;
-  margin-top: 40px;
-}
-
-.d-grid button {
-  background-color: darkslateblue;
-  border-color: darkslateblue;
-  color: #f0f0f0;
-}
-
-.d-grid button:hover {
-  background-color: lightblue;
 }
 
 .custom-carousel {
