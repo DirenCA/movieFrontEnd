@@ -87,75 +87,37 @@ export default {
         <span class="visually-hidden">Next</span>
       </button>
     </div>
-    <v-container>
-      <v-tabs v-model="tab">
-        <v-tab v-for="tabName in tabs" :key="tabName">
-          {{ tabName }}
-        </v-tab>
-      </v-tabs>
 
-      <v-tabs-items v-model="tab">
-        <v-tab-item>
-          <v-container>
-            <v-row>
-              <v-col
-                v-for="movie in topRatedMovies"
-                :key="movie.id"
-                cols="12"
-                sm="6"
-                md="4"
-                lg="3"
-              >
-                <v-card class="mx-auto my-4" max-width="300">
-                  <v-img :src="movie.imageUrl" height="400px" class="white--text"></v-img>
-                  <v-card-title class="text-center">{{ movie.title }}</v-card-title>
-                </v-card>
-              </v-col>
-            </v-row>
-          </v-container>
-        </v-tab-item>
-
-        <v-tab-item>
-          <v-container>
-            <v-row>
-              <v-col
-                v-for="movie in upcomingMovies"
-                :key="movie.id"
-                cols="12"
-                sm="6"
-                md="4"
-                lg="3"
-              >
-                <v-card class="mx-auto my-4" max-width="300">
-                  <v-img :src="movie.imageUrl" height="400px" class="white--text"></v-img>
-                  <v-card-title class="text-center">{{ movie.title }}</v-card-title>
-                </v-card>
-              </v-col>
-            </v-row>
-          </v-container>
-        </v-tab-item>
-
-        <v-tab-item>
-          <v-container>
-            <v-row>
-              <v-col
-                v-for="movie in popularMovies"
-                :key="movie.id"
-                cols="12"
-                sm="6"
-                md="4"
-                lg="3"
-              >
-                <v-card class="mx-auto my-4" max-width="300">
-                  <v-img :src="movie.imageUrl" height="400px" class="white--text"></v-img>
-                  <v-card-title class="text-center">{{ movie.title }}</v-card-title>
-                </v-card>
-              </v-col>
-            </v-row>
-          </v-container>
-        </v-tab-item>
-      </v-tabs-items>
-    </v-container>
+    <nav class="my-tabs">
+      <div class="nav nav-tabs" id="nav-tab" role="tablist">
+        <button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#nav-home" type="button" role="tab" aria-controls="nav-home" aria-selected="true">TopRated</button>
+        <button class="nav-link" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-profile" type="button" role="tab" aria-controls="nav-profile" aria-selected="false">Upcoming</button>
+        <button class="nav-link" id="nav-contact-tab" data-bs-toggle="tab" data-bs-target="#nav-contact" type="button" role="tab" aria-controls="nav-contact" aria-selected="false">Popular</button>
+      </div>
+    </nav>
+    <div class="tab-content" id="nav-tabContent">
+      <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+        <v-container>
+          <v-row>
+            <v-col
+              v-for="movie in topRatedMovies"
+              :key="movie.id"
+              cols="12"
+              sm="6"
+              md="4"
+              lg="3"
+            >
+              <v-card class="mx-auto my-4" max-width="300">
+                <v-img :src="movie.imageUrl" height="400px" class="white--text"></v-img>
+                <v-card-title class="text-center">{{ movie.title }}</v-card-title>
+              </v-card>
+            </v-col>
+          </v-row>
+        </v-container>
+      </div>
+      <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">...</div>
+      <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">...</div>
+    </div>
   </div>
 </template>
 
@@ -204,5 +166,11 @@ export default {
 
 .custom-carousel .carousel-caption p {
   font-size: 1rem;
+}
+
+.my-tabs {
+  max-width: 1000px;
+  margin: 0 auto;
+  margin-top: 50px;
 }
 </style>
