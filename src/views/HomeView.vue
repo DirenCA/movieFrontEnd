@@ -115,8 +115,44 @@ export default {
           </v-row>
         </v-container>
       </div>
-      <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">...</div>
-      <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">...</div>
+      <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
+        <v-container>
+          <v-row>
+            <v-col
+              v-for="movie in upcomingMovies"
+              :key="movie.id"
+              cols="12"
+              sm="6"
+              md="4"
+              lg="3"
+            >
+              <v-card class="mx-auto my-4" max-width="300">
+                <v-img :src="movie.imageUrl" height="400px" class="white--text"></v-img>
+                <v-card-title class="text-center">{{ movie.title }}</v-card-title>
+              </v-card>
+            </v-col>
+          </v-row>
+        </v-container>
+      </div>
+      <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">
+        <v-container>
+          <v-row>
+            <v-col
+              v-for="movie in popularMovies"
+              :key="movie.id"
+              cols="12"
+              sm="6"
+              md="4"
+              lg="3"
+            >
+              <v-card class="mx-auto my-4" max-width="300">
+                <v-img :src="movie.imageUrl" height="400px" class="white--text"></v-img>
+                <v-card-title class="text-center">{{ movie.title }}</v-card-title>
+              </v-card>
+            </v-col>
+          </v-row>
+        </v-container>
+      </div>
     </div>
   </div>
 </template>
