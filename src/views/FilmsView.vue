@@ -5,7 +5,8 @@ export default {
   data () {
     return {
       movies: [],
-      popularMovies: []
+      popularMovies: [],
+      userToken: localStorage.getItem('userToken') || ''
     }
   },
   methods: {
@@ -19,13 +20,17 @@ export default {
       }
     },
     async addToWatchlist (movie) {
-      console.log('Adding movie to watchlist:', movie) // Log-Ausgabe hinzugefügt
+      console.log('Adding movie to watchlist:', movie)
       try {
-        const response = await axios.post('/watchlist', movie)
-        console.log('Response from backend:', response)// Log-Ausgabe hinzugefügt
+        const response = await axios.post('/watchlist/add', movie, {
+          headers: {
+            Authorization: this.userToken
+          }
+        })
+        console.log('Response from backend:', response)
         alert('Film zur Watchlist hinzugefügt!')
       } catch (error) {
-        console.error('Error adding movie to watchlist:', error) // Fehler-Log hinzugefügt
+        console.error('Error adding movie to watchlist:', error)
       }
     }
   },

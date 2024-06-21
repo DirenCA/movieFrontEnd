@@ -95,10 +95,14 @@ export default {
         const response = await axios.post('/user/login', {
           userName: this.loginUsername,
           password: this.loginPassword
+        }, {
+          headers: {
+            'Content-Type': 'application/json'
+          }
         })
         if (response.data) {
           this.user = response.data
-          this.signInModal.hide() // Modal schließen
+          this.signInModal.hide()
           this.$router.push({ name: 'about' })
         } else {
           this.error = 'Ungültiger Benutzername oder Passwort'
@@ -118,7 +122,7 @@ export default {
         return
       }
       try {
-        const response = await axios.post('/user', {
+        const response = await axios.post('http://localhost:8080/user', {
           userName: this.username,
           password: this.password
         })
@@ -137,6 +141,7 @@ export default {
     },
     logOut () {
       this.user = null
+      localStorage.removeItem('userToken')
       this.$router.push({ name: 'home' })
     },
     showSignInModal () {
