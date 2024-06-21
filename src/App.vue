@@ -102,6 +102,9 @@ export default {
         })
         if (response.data) {
           this.user = response.data
+          // Speichern Sie den Token und den Benutzernamen im localStorage
+          localStorage.setItem('userToken', response.data.token)
+          localStorage.setItem('userName', response.data.userName)
           this.signInModal.hide()
           this.$router.push({ name: 'about' })
         } else {
@@ -149,6 +152,14 @@ export default {
     },
     showSignUpModal () {
       this.signUpModal.show()
+    }
+  },
+  created () {
+    // Lesen Sie den Token und den Benutzernamen aus dem localStorage, wenn die Anwendung gestartet wird
+    const token = localStorage.getItem('userToken')
+    const userName = localStorage.getItem('userName')
+    if (token) {
+      this.user = { token: token, userName: userName }
     }
   }
 }
