@@ -9,7 +9,9 @@ export default {
       movies: [],
       discoverMovies: [],
       moviesInWatchlist: [],
-      userToken: localStorage.getItem('userToken') || ''
+      userToken: localStorage.getItem('userToken') || '',
+      watchlistLoaded: false,
+      search: '' // Hinzufügen der fehlenden Suchvariable
     }
   },
   components: {
@@ -21,8 +23,7 @@ export default {
         const response = await axios.get('/discover')
         console.log(response)
         this.discoverMovies = response.data
-        // Initialisieren der Watchlist-Zustände für die geladenen Filme
-        await this.initializeWatchlistStates()
+        await this.initializeWatchlistStates() // Warten, bis die Watchlist initialisiert ist
       } catch (error) {
         console.error(error)
       }
@@ -34,10 +35,28 @@ export default {
             Authorization: this.userToken
           }
         })
+        console.log('Watchlist loaded:', response.data)
         this.moviesInWatchlist = response.data.map(movie => movie.id)
+        this.watchlistLoaded = true
       } catch (error) {
         console.error('Error loading watchlist:', error)
       }
+    },
+    async checkIfMovieInWatchlist (movieId) {
+      try {
+        const response = await axios.get('/user/isMovieInWatchlist', {
+          params: {
+            token: this.userToken,
+            filmId: movieId
+          }
+        })
+        return response.data
+      } catch (error) {
+        console.error('Error checking if movie is in watchlist:', error)
+      }
+    },
+    isMovieInWatchlist (movieId) {
+      return this.moviesInWatchlist.includes(movieId)
     },
     async addToWatchlist (movie) {
       console.log('Adding movie to watchlist:', movie)
@@ -49,7 +68,8 @@ export default {
         })
         console.log('Response from backend:', response)
         alert('Film zur Watchlist hinzugefügt!')
-        this.moviesInWatchlist.push(movie.id) // Zustand aktualisieren
+        this.moviesInWatchlist.push(movie.id) // Hier wird die ID des Films zur Liste hinzugefügt
+        this.moviesInWatchlist.sort() // Sortieren der IDs für Konsistenz
       } catch (error) {
         console.error('Error adding movie to watchlist:', error)
       }
@@ -65,7 +85,8 @@ export default {
         })
         console.log('Response from backend:', response)
         alert('Film aus der Watchlist entfernt!')
-        this.moviesInWatchlist = this.moviesInWatchlist.filter(id => id !== movie.id) // Zustand aktualisieren
+        this.moviesInWatchlist = this.moviesInWatchlist.filter(id => id !== movie.id)
+        this.moviesInWatchlist = this.moviesInWatchlist.filter(id => id !== movie.id)
       } catch (error) {
         console.error('Error removing movie from watchlist:', error)
       }
@@ -103,8 +124,10 @@ export default {
               <div class="text-center">
                 <Rating :filmId="movie.id" />
               </div>
-              <a v-if="moviesInWatchlist.includes(movie.id)" href="#" class="btn btn-danger" @click.prevent="removeFromWatchlist(movie)">Remove from Watchlist</a>
-              <a v-else href="#" class="btn btn-primary" @click.prevent="addToWatchlist(movie)">Add to Watchlist</a>
+              <div v-if="watchlistLoaded">
+                <a v-if="isMovieInWatchlist(movie.id)" href="#" class="btn btn-danger" @click.prevent="removeFromWatchlist(movie)">Remove from Watchlist</a>
+                <a v-else href="#" class="btn btn-primary" @click.prevent="addToWatchlist(movie)">Add to Watchlist</a>
+              </div>
             </div>
           </div>
         </div>
