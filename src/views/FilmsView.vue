@@ -1,5 +1,6 @@
 <script>
 import axios from '@/axios.js'
+import Rating from '@/components/Rating.vue'
 export default {
   name: 'films',
   data () {
@@ -8,6 +9,9 @@ export default {
       popularMovies: [],
       userToken: localStorage.getItem('userToken') || ''
     }
+  },
+  components: {
+    Rating
   },
   methods: {
     async getPopularMovies () {
@@ -48,7 +52,6 @@ export default {
       <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
     </form>
     <div>
-      <h1>Gesuchtes Wort: {{ search }}</h1>
       <ul>
         <li v-for="movie in movies" :key="movie.id">
           {{ movie }}
@@ -56,7 +59,7 @@ export default {
       </ul>
     </div>
     <div>
-      <h1>Trending:</h1>
+      <h1>Movies:</h1>
       <div class="row justify-content-center">
         <div class="col-md-4 d-flex align-items-stretch" v-for="movie in popularMovies" :key="movie.id">
           <div class="card" style="width: 18rem; margin: 1rem;">
@@ -65,10 +68,7 @@ export default {
               <h5 class="card-title">{{ movie.title }}</h5>
               <p class="card-text">{{ movie.overview }}</p>
               <div class="text-center">
-                <v-rating
-                  v-model="rating"
-                  hover
-                ></v-rating>
+                <Rating :filmId="movie.id" />
               </div>
               <a href="#" class="btn btn-primary" @click.prevent="addToWatchlist(movie)">Add to Watchlist</a>
             </div>
