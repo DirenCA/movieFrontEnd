@@ -1,12 +1,14 @@
 <script>
 import axios from '@/axios.js'
 import Rating from '@/components/Rating.vue'
+
 export default {
   name: 'films',
   data () {
     return {
       movies: [],
-      popularMovies: [],
+      discoverMovies: [],
+      moviesInWatchlist: [],
       userToken: localStorage.getItem('userToken') || ''
     }
   },
@@ -14,32 +16,63 @@ export default {
     Rating
   },
   methods: {
-    async getPopularMovies () {
+    async getDiscoverFilms () {
       try {
-        const response = await axios.get('/popular')
+        const response = await axios.get('/discover')
         console.log(response)
-        this.popularMovies = response.data
+        this.discoverMovies = response.data
+        // Initialisieren der Watchlist-Zustände für die geladenen Filme
+        await this.initializeWatchlistStates()
       } catch (error) {
         console.error(error)
+      }
+    },
+    async initializeWatchlistStates () {
+      try {
+        const response = await axios.get('/user/watchlist', {
+          headers: {
+            Authorization: this.userToken
+          }
+        })
+        this.moviesInWatchlist = response.data.map(movie => movie.id)
+      } catch (error) {
+        console.error('Error loading watchlist:', error)
       }
     },
     async addToWatchlist (movie) {
       console.log('Adding movie to watchlist:', movie)
       try {
-        const response = await axios.post('/watchlist/add', movie, {
+        const response = await axios.post('/user/watchlist', movie, {
           headers: {
             Authorization: this.userToken
           }
         })
         console.log('Response from backend:', response)
         alert('Film zur Watchlist hinzugefügt!')
+        this.moviesInWatchlist.push(movie.id) // Zustand aktualisieren
       } catch (error) {
         console.error('Error adding movie to watchlist:', error)
+      }
+    },
+    async removeFromWatchlist (movie) {
+      console.log('Removing movie from watchlist:', movie)
+      try {
+        const response = await axios.delete('/user/watchlist', {
+          data: movie,
+          headers: {
+            Authorization: this.userToken
+          }
+        })
+        console.log('Response from backend:', response)
+        alert('Film aus der Watchlist entfernt!')
+        this.moviesInWatchlist = this.moviesInWatchlist.filter(id => id !== movie.id) // Zustand aktualisieren
+      } catch (error) {
+        console.error('Error removing movie from watchlist:', error)
       }
     }
   },
   created () {
-    this.getPopularMovies()
+    this.getDiscoverFilms()
   }
 }
 </script>
@@ -61,7 +94,7 @@ export default {
     <div>
       <h1>Movies:</h1>
       <div class="row justify-content-center">
-        <div class="col-md-4 d-flex align-items-stretch" v-for="movie in popularMovies" :key="movie.id">
+        <div class="col-md-4 d-flex align-items-stretch" v-for="movie in discoverMovies" :key="movie.id">
           <div class="card" style="width: 18rem; margin: 1rem;">
             <img class="card-img-top" :src="movie.imageUrl" alt="Movie poster">
             <div class="card-body">
@@ -70,7 +103,8 @@ export default {
               <div class="text-center">
                 <Rating :filmId="movie.id" />
               </div>
-              <a href="#" class="btn btn-primary" @click.prevent="addToWatchlist(movie)">Add to Watchlist</a>
+              <a v-if="moviesInWatchlist.includes(movie.id)" href="#" class="btn btn-danger" @click.prevent="removeFromWatchlist(movie)">Remove from Watchlist</a>
+              <a v-else href="#" class="btn btn-primary" @click.prevent="addToWatchlist(movie)">Add to Watchlist</a>
             </div>
           </div>
         </div>

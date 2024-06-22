@@ -27,3 +27,18 @@ npm run lint
 
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
+
+# ToDos
+
+* Sternebewertung soll optisch bestehen bleiben, wenn man die seite aktualisiert
+* Funktionsweise im ReadMe schreiben
+* Reviewtext für user ermöglichen
+
+# Funktionen
+* User Login
+* User Registrierung
+* Filme suchen
+* Filme bewerten
+* Filme zur Watchlist hinzufügen
+* Filme aus der Watchlist entfernen
+* 
