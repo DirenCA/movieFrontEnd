@@ -36,23 +36,10 @@ export default {
           }
         })
         console.log('Watchlist loaded:', response.data)
-        this.moviesInWatchlist = response.data.map(movie => movie.id)
+        this.moviesInWatchlist = response.data
         this.watchlistLoaded = true
       } catch (error) {
         console.error('Error loading watchlist:', error)
-      }
-    },
-    async checkIfMovieInWatchlist (movieId) {
-      try {
-        const response = await axios.get('/user/isMovieInWatchlist', {
-          params: {
-            token: this.userToken,
-            filmId: movieId
-          }
-        })
-        return response.data
-      } catch (error) {
-        console.error('Error checking if movie is in watchlist:', error)
       }
     },
     isMovieInWatchlist (movieId) {
