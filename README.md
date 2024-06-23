@@ -30,8 +30,10 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 
 # ToDos
 
-* Sternebewertung soll optisch bestehen bleiben, wenn man die seite aktualisiert
+* Filterung der Filme in der FilmsView
+* Sternebewertung soll optisch bestehen bleiben, wenn man die Seite aktualisiert
 * Funktionsweise im ReadMe schreiben
+* Übersichtsseite zu einem Film erstellen, wenn man raufklickt
 * Reviewtext für user ermöglichen
 
 # Funktionen
