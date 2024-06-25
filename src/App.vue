@@ -125,7 +125,7 @@ export default {
         return
       }
       try {
-        const response = await axios.post('http://localhost:8080/user', {
+        const response = await axios.post('https://moviebe-5i9h.onrender.com/user', {
           userName: this.username,
           password: this.password
         })

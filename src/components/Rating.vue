@@ -13,7 +13,7 @@ export default {
       console.log('rateFilm method called', rating.value) // Neue Ausgabe
       try {
         const userToken = localStorage.getItem('userToken')
-        const response = await axios.post('http://localhost:8080/user/rateFilm', null, {
+        const response = await axios.post('https://moviebe-5i9h.onrender.com/user/rateFilm', null, {
           params: {
             token: userToken,
             filmId: props.filmId,
