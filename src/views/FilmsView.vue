@@ -28,31 +28,43 @@ export default {
         console.error(error)
       }
     },
-    async loadMoreMovies () {
-      if (this.isLoading || this.currentPage > this.totalPages) return
+    async loadMoreMovies() {
+      if (this.isLoading) return
 
       this.isLoading = true
 
       try {
         const response = await axios.get('/discover', {
           params: {
-            page: this.currentPage
+            page: this.currentPage // Die aktuelle Seite als Parameter an die Backend-API übergeben
           }
         })
 
-        this.discoverMovies.push(...response.data)
-        this.currentPage++
+        if (response.data.length > 0) {
+          this.discoverMovies.push(...response.data)
+          this.currentPage++ // Erhöhe die Seitenzahl nur, wenn neue Filme geladen wurden
+        } else {
+          console.log('No more movies to load')
+        }
       } catch (error) {
         console.error('Error loading more movies:', error)
       } finally {
         this.isLoading = false
       }
     },
-    onScroll () {
+    onScroll() {
       if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 500) {
         this.loadMoreMovies()
       }
-    },
+    }
+  },
+  mounted() {
+    window.addEventListener('scroll', this.onScroll)
+    this.loadMoreMovies() // Lade die erste Seite der Filme beim Initialisieren
+  },
+  beforeDestroy() {
+    window.removeEventListener('scroll', this.onScroll)
+  },
     async initializeWatchlistStates () {
       try {
         const response = await axios.get('/user/watchlist', {
