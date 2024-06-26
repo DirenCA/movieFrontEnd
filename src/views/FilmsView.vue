@@ -28,6 +28,31 @@ export default {
         console.error(error)
       }
     },
+    async loadMoreMovies () {
+      if (this.isLoading || this.currentPage > this.totalPages) return
+
+      this.isLoading = true
+
+      try {
+        const response = await axios.get('/discover', {
+          params: {
+            page: this.currentPage
+          }
+        })
+
+        this.discoverMovies.push(...response.data)
+        this.currentPage++
+      } catch (error) {
+        console.error('Error loading more movies:', error)
+      } finally {
+        this.isLoading = false
+      }
+    },
+    onScroll () {
+      if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 500) {
+        this.loadMoreMovies()
+      }
+    },
     async initializeWatchlistStates () {
       try {
         const response = await axios.get('/user/watchlist', {
@@ -81,6 +106,7 @@ export default {
   },
   created () {
     this.getDiscoverFilms()
+    window.addEventListener('scroll', this.onScroll)
   }
 }
 </script>
