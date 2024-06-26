@@ -8,6 +8,8 @@ export default {
     return {
       movies: [],
       discoverMovies: [],
+      currentPage: 1,
+      isLoading: false,
       moviesInWatchlist: [],
       userToken: localStorage.getItem('userToken') || '',
       watchlistLoaded: false,
@@ -28,7 +30,7 @@ export default {
         console.error(error)
       }
     },
-    async loadMoreMovies() {
+    async loadMoreMovies () {
       if (this.isLoading) return
 
       this.isLoading = true
@@ -52,19 +54,11 @@ export default {
         this.isLoading = false
       }
     },
-    onScroll() {
+    onScroll () {
       if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 500) {
         this.loadMoreMovies()
       }
-    }
-  },
-  mounted() {
-    window.addEventListener('scroll', this.onScroll)
-    this.loadMoreMovies() // Lade die erste Seite der Filme beim Initialisieren
-  },
-  beforeDestroy() {
-    window.removeEventListener('scroll', this.onScroll)
-  },
+    },
     async initializeWatchlistStates () {
       try {
         const response = await axios.get('/user/watchlist', {
@@ -115,6 +109,13 @@ export default {
         console.error('Error removing movie from watchlist:', error)
       }
     }
+  },
+  mounted () {
+    window.addEventListener('scroll', this.onScroll)
+    this.loadMoreMovies() // Lade die erste Seite der Filme beim Initialisieren
+  },
+  beforeUnmount () {
+    window.removeEventListener('scroll', this.onScroll)
   },
   created () {
     this.getDiscoverFilms()
