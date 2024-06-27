@@ -13,7 +13,9 @@ export default {
       moviesInWatchlist: [],
       userToken: localStorage.getItem('userToken') || '',
       watchlistLoaded: false,
-      search: '' // Hinzufügen der fehlenden Suchvariable
+      search: '',
+      ortGenre: '',
+      sortYear: ''
     }
   },
   components: {
@@ -28,6 +30,14 @@ export default {
         await this.initializeWatchlistStates() // Warten, bis die Watchlist initialisiert ist
       } catch (error) {
         console.error(error)
+      }
+    },
+    sortMovies () {
+      if (this.sortGenre) {
+        this.discoverMovies.sort((a, b) => a.genre.localeCompare(b.genre))
+      }
+      if (this.sortYear) {
+        this.discoverMovies.sort((a, b) => a.year - b.year)
       }
     },
     async loadMoreMovies () {
@@ -126,11 +136,22 @@ export default {
 
 <template>
   <div class="films container">
-    <h1 class="text-center">Hier findest du alle Filme!</h1>
-    <form @submit.prevent="searchMovies" class="text-center">
-      <input v-model="search" class="form-control d-inline-block w-50" type="search" placeholder="Search" aria-label="Search">
-      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-    </form>
+    <div>
+      <!-- ... -->
+      <select v-model="sortGenre" @change="sortMovies">
+        <option value="">Sortieren nach Genre</option>
+        <option value="action">Action</option>
+        <option value="comedy">Comedy</option>
+        <!-- weitere features -->
+      </select>
+      <select v-model="sortYear" @change="sortMovies">
+        <option value="">Sortieren nach Jahr</option>
+        <option value="2020">2020</option>
+        <option value="2021">2021</option>
+        <!-- weitere features -->
+      </select>
+      <!-- ... -->
+    </div>
     <div>
       <ul>
         <li v-for="movie in movies" :key="movie.id">
