@@ -76,7 +76,7 @@ export default {
             <div class="card-body">
               <h5 class="card-title">{{ movie.title }}</h5>
               <p class="card-text">{{ movie.overview }}</p>
-              <p class="card-text">Release Date: {{ movie.releaseDate }}</p>
+              <p class="card-text">Release Date: {{ movie.releaseDate.split('-')[0] }}</p>
               <p class="card-text">Average Vote: {{ movie.voteAverage }}</p>
               <p class="card-text">Genre: {{ movie.genre }}</p>
               <div class="text-center">
