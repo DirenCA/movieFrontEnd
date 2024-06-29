@@ -33,9 +33,6 @@ export default {
       }
     },
     sortMovies () {
-      if (this.sortGenre) {
-        this.discoverMovies.sort((a, b) => a.genre.localeCompare(b.genre))
-      }
       if (this.sortYear) {
         this.discoverMovies.sort((a, b) => a.year - b.year)
       }
@@ -137,13 +134,6 @@ export default {
 <template>
   <div class="films container">
     <div>
-      <!-- ... -->
-      <select v-model="sortGenre" @change="sortMovies">
-        <option value="">Sortieren nach Genre</option>
-        <option value="action">Action</option>
-        <option value="comedy">Comedy</option>
-        <!-- weitere features -->
-      </select>
       <select v-model="sortYear" @change="sortMovies">
         <option value="">Sortieren nach Jahr</option>
         <option value="2020">2020</option>
@@ -168,6 +158,7 @@ export default {
             <div class="card-body">
               <h5 class="card-title">{{ movie.title }}</h5>
               <p class="card-text">{{ movie.overview }}</p>
+              <p class="card-text">Release Date: {{ movie.releaseDate.split('-')[0] }}</p>
               <div class="text-center">
                 <Rating :filmId="movie.id" />
               </div>
