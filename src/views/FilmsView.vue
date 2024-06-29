@@ -14,7 +14,6 @@ export default {
       userToken: localStorage.getItem('userToken') || '',
       watchlistLoaded: false,
       search: '',
-      ortGenre: '',
       sortYear: ''
     }
   },
@@ -158,7 +157,6 @@ export default {
             <div class="card-body">
               <h5 class="card-title">{{ movie.title }}</h5>
               <p class="card-text">{{ movie.overview }}</p>
-              <p class="card-text">Release Date: {{ movie.releaseDate.split('-')[0] }}</p>
               <div class="text-center">
                 <Rating :filmId="movie.id" />
               </div>
