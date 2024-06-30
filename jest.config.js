@@ -11,5 +11,8 @@ module.exports = {
   ],
   transformIgnorePatterns: [
     '/node_modules/(?!axios/.*)'
-  ]
+  ],
+  moduleNameMapper: {
+    '^axios$': '<rootDir>/__mocks__/axios.js'
+  }
 }
