@@ -106,7 +106,7 @@ export default {
           localStorage.setItem('userToken', response.data.token)
           localStorage.setItem('userName', response.data.userName)
           this.signInModal.hide()
-          this.$router.push({ name: 'about' })
+          this.$router.push({ name: 'home' })
         } else {
           this.error = 'Ungültiger Benutzername oder Passwort'
         }
