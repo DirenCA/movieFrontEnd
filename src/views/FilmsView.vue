@@ -124,6 +124,7 @@ export default {
     window.removeEventListener('scroll', this.onScroll)
   },
   created () {
+    console.log('created hook called')
     this.getDiscoverFilms()
     window.addEventListener('scroll', this.onScroll)
   }
